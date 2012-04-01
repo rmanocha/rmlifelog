@@ -4,7 +4,7 @@ A clone of [Simple](https://github.com/orf/simple), designed for Google Appengin
 
 About
 ============
-Seincere has the same minimal philosophy as Simple. It's written to be used out of the box.
+Seincere shares the same minimal philosophy as Simple. It's written to be used out of the box.
 
 Installation
 ============
