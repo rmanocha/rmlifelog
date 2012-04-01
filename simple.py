@@ -36,6 +36,7 @@ class Post(ndb.Model):
     created_at = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
     updated_at = ndb.DateTimeProperty(auto_now=True)
     id = ndb.ComputedProperty(lambda self: self.key.id() if self.key else None)
+    private = ndb.BooleanProperty(default=False)
 
     @classmethod
     def get_by_slug(cls, slug):
