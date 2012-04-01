@@ -14,6 +14,7 @@ indexes:
   properties:
   - name: draft
   - name: created_at
+  - name: updated_at
     direction: desc
 
 - kind: Post
