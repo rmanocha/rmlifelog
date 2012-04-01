@@ -72,7 +72,11 @@ def index():
 
     posts_count_future = Post.query(Post.draft==False).count_async()
 
-    posts_async = Post.query(Post.draft==False).order(-Post.created_at).fetch_async(limit=POSTS_PER_PAGE, offset=page*POSTS_PER_PAGE)
+    posts_async = Post.query(Post.draft==False)
+    if not users.get_current_user() or not users.is_current_user_admin():
+        posts_async = posts_async.filter(Post.private==False)
+
+    posts_async = posts_async.order(-Post.created_at).fetch_async(limit=POSTS_PER_PAGE, offset=page*POSTS_PER_PAGE)
 
     posts_count = posts_count_future.get_result()
     is_more = posts_count > ((page*POSTS_PER_PAGE) + POSTS_PER_PAGE)
