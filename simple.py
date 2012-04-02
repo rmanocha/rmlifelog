@@ -10,13 +10,13 @@ import markdown
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
+
 app = Flask(__name__)
 app.config.from_object('settings')
 
 POSTS_PER_PAGE = app.config.get('POSTS_PER_PAGE', 10)
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
-
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -51,7 +51,7 @@ class Post(ndb.Model):
         return q.fetch(10000000)
 
     def render_content(self):
-        return markdown.Markdown(extensions=['fenced_code'], output_format="html5", safe_mode=True).convert(self.text)
+        return markdown.Markdown(extensions=['fenced_code', 'mathjax'], output_format="html5", safe_mode=True).convert(self.text)
 
 
 def requires_authentication(f):
@@ -81,7 +81,8 @@ def index():
     return render_template("index.html", posts=posts, now=datetime.datetime.now(),
                                          is_more=is_more, current_page=page)
 @app.route("/<slug>/")
-def view_post_slug(slug):
+@app.route("/<int:year>/<int:month>/<slug>")
+def view_post_slug(slug, **kwarg):
     post = Post.get_by_slug(slug)
 
     if not post:
@@ -172,19 +173,6 @@ def admin():
     return render_template("admin.html", drafts=drafts, posts=posts)
 
 
-@app.route("/admin/preview/<int:id>/", methods=["POST"])
-@requires_authentication
-def preview(id):
-    post = Post()
-
-    import logging; logging.info(request.form)
-    title = request.form.get("post_title","")
-    text  = request.form.get("post_content","")
-
-    post.title = title
-    post.text  = text
-
-    return render_template("post_preview.html", post=post)
 
 def slugify(text, delim=u'-'):
     """Generates an slightly worse ASCII-only slug."""
