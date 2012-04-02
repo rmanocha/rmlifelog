@@ -51,7 +51,7 @@ class Post(ndb.Model):
         return q.fetch(10000000)
 
     def render_content(self):
-        return markdown.Markdown(extensions=['fenced_code', 'mathjax'], output_format="html5", safe_mode=True).convert(self.text)
+        return markdown.Markdown(extensions=['fenced_code'], output_format="html5", safe_mode=True).convert(self.text)
 
 
 def requires_authentication(f):
@@ -81,8 +81,7 @@ def index():
     return render_template("index.html", posts=posts, now=datetime.datetime.now(),
                                          is_more=is_more, current_page=page)
 @app.route("/<slug>/")
-@app.route("/<int:year>/<int:month>/<slug>")
-def view_post_slug(slug, **kwarg):
+def view_post_slug(slug):
     post = Post.get_by_slug(slug)
 
     if not post:
