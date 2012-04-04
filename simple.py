@@ -10,13 +10,13 @@ import markdown
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
+
 app = Flask(__name__)
 app.config.from_object('settings')
 
 POSTS_PER_PAGE = app.config.get('POSTS_PER_PAGE', 10)
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
-
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -177,19 +177,6 @@ def admin():
     return render_template("admin.html", drafts=drafts, posts=posts)
 
 
-@app.route("/admin/preview/<int:id>/", methods=["POST"])
-@requires_authentication
-def preview(id):
-    post = Post()
-
-    import logging; logging.info(request.form)
-    title = request.form.get("post_title","")
-    text  = request.form.get("post_content","")
-
-    post.title = title
-    post.text  = text
-
-    return render_template("post_preview.html", post=post)
 
 def slugify(text, delim=u'-'):
     """Generates an slightly worse ASCII-only slug."""
