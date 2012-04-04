@@ -20,6 +20,12 @@ indexes:
 - kind: Post
   properties:
   - name: draft
+  - name: created_at
+    direction: desc
+
+- kind: Post
+  properties:
+  - name: draft
   - name: private
   - name: created_at
     direction: desc

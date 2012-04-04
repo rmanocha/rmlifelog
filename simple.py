@@ -46,10 +46,8 @@ class Post(ndb.Model):
     @classmethod
     def get_posts(cls, draft=True):
         q = cls.query(cls.draft==draft)
-        q.order(-cls.updated_at)
-        #Fetch all posts - if you have more than 10 million posts, you're on
-        #your own
-        return q.fetch(10000000)
+        q.order(-cls.created_at)
+        return q.fetch()
 
     def render_content(self):
         return markdown.Markdown(extensions=['fenced_code'], output_format="html5", safe_mode=True).convert(self.text)
