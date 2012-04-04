@@ -4,7 +4,6 @@
 
 {% block sidebar %}
     <br />
-    Views: {{ post.views }}
 {% endblock %}
 
 {% block content %}
@@ -19,6 +18,7 @@
             {% endif %}
         </div>
 
+        <div id="disqus_thread" style="width: 580px;"></div>
         <a class="button space-top" href="{{ url_for('index', page=pid) }}">Back to Blog</a>
 
     </section>
